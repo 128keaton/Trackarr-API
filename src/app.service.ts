@@ -1,8 +1,16 @@
-import { Injectable } from '@nestjs/common';
+import {Injectable} from '@nestjs/common';
+import TrackingNumberVerification = require('tracking-number-validation');
+import {Helpers} from "./helpers";
 
 @Injectable()
 export class AppService {
-  getHello(): string {
-    return 'Hello World!';
-  }
+    getCarrier(trackingNumber: string): string {
+        const carrierResponse: [string] = TrackingNumberVerification.getCourier(trackingNumber);
+
+        if (!!carrierResponse && carrierResponse.length > 0) {
+            return Helpers.titleizeWord(carrierResponse[0]);
+        }
+
+        return 'Unknown'
+    }
 }
